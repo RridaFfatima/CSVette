@@ -1,0 +1,31 @@
+customer_id,full_name,email,age,city,country,signup_date,loyalty_score,source,newsletter
+00001,Ava Thompson,ava.thompson@example.com,34,Porto,Portugal,2023-01-15,7.2,web,true
+00002,Liam Osei,liam.osei@example.com,28,Edinburgh,UK,2023-01-18,4.5,web,false
+00005,Mia Chen,,29,Xiamen,China,2023-01-27,5.1,web,true
+00006,Ethan Brooks,ethan.brooks@example.com,31,Leeds,U.K.,2023-01-30,3.9,web,false
+00007,Isabella Rossi,i.rossi@example.com,38,Naples,Italy,2023-02-02,8.4,web,true
+00007,Isabella Rossi,i.rossi@example.com,38,Naples,Italy,2023-02-02,8.4,web,true
+00007,Isabella Rossi,i.rossi@example.com,38,Napoli,Italy,2023-02-02,8.4,web,true
+00008,Adam Kowalski,akowalski@example.com,N/A,Warsaw,Poland,2023-02-05,5.5,web,true
+00009,Emma Laurent,emma.laurent@example.com,26,Lisbon,portugal,2023-02-08,6.2,web,false
+00010,Jack Murphy,N/A,44,Krakow,Poland,2023-02-11,2.8,web,false
+00011,Olivia Santos,olivia.santos@example.com,22,Porto,PORTUGAL,2023-02-14,7.7,web,true
+00012,William Kim,wkim@example.com,twenty-two,Karachi,Pakistan,2023-02-17,4.1,web,false
+00013,Ava Nielsen,ava.nielsen@example.com,33,Lahore,Pakistan,2023-02-20,9.3,web,true
+00014,Leo Martins,lmartins@example.com,27,Faro,portugal,2023-02-23,5.9,web,false
+00015,Grace Okafor,NULL,35,Karachi,pakistan,2023-02-26,6.4,web,true
+00016,Henry Novak,hnovak@example.com,39,Lahore,PAKISTAN,2023-03-01,4.8,web,false
+00017,Ella Baker,ella.baker@example.com,19,Manchester,U.K.,2023-03-04,3.3,web,true
+00018,Oscar Reyes,oscar.reyes@example.com,52,Austin,USA,2023-03-07,7.9,web,false
+00019,Lily Zhang,lily.zhang@example.com,?,Hangzhou,China,2023-03-10,6.0,web,true
+00020,David Costa,david.costa@example.com,30,Porto,Portugal,2023-03-13,5.4,web,false
+00021,Chloe Dubois,chloe.dubois@example.com,24,Seattle,USA,2023-03-16,8.1,web,true
+00022,Jack Andersen,j.andersen@example.com,45,Chicago,U.S.A.,2023-03-19,2.5,web,false
+00023,Mia Horvat,mia.horvat@example.com,29,Dallas,U.S.A.,2023-03-22,6.6,web,true
+00024,Lucas Silva,lsilva@example.com,36,Faro,PORTUGAL,2023-03-25,7.3,web,false
+00025,Ella Novak,ella.novak@example.com,20,Peshawar,Pak,2023-03-28,4.9,web,true
+00026,Noah Bianchi,noah.bianchi@example.com,112,Multan,Pak,2023-03-31,97.0,web,false
+00027,Adam Weber,aweber@example.com,19 yrs,Berlin,Germany,2023-04-03,5.2,web,true
+00028,Sofia Andersson,s.andersson@example.com,28,Multan,PAKISTAN,2023-04-06,8.8,web,false
+00029,Felix Wagner,felix.wagner@example.com,43,Hamburg,Germany,2023-04-09,,web,true
+00030,Georgia Papadopoulos,g.papadopoulos@example.com,31,Athens,pakistan,2023-04-12,5.6,web,false

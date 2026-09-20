@@ -1,0 +1,37 @@
+order_id,order_date,region,product,units,unit_price,revenue,channel
+SO-1001,2024-01-03,North,Standalone Monitor 27-inch,4,289.00,1156.00,Online
+SO-1002,2024-01-04,South,Laptop Stand,10,34.50,345.00,Retail
+SO-1003,2024-01-05,East,Mechanical Keyboard,6,89.99,539.94,Online
+SO-1004,2024-01-08,West,"USB-C Hub, 7-in-1",12,42.00,504.00,Wholesale
+SO-1005,2024-01-09,North,Wireless Mouse,20,24.99,499.80,Online
+SO-1006,2024-01-11,South,Standalone Monitor 27-inch,3,289.00,867.00,Retail
+SO-1007,2024-01-12,East,Laptop Stand,8,34.50,276.00,Online
+SO-1008,2024-01-15,West,Webcam 1080p,15,59.00,885.00,Wholesale
+SO-1009,2024-01-16,North,Desk Lamp LED,9,45.75,411.75,Online
+SO-1010,2024-01-18,South,Mechanical Keyboard,5,89.99,449.95,Retail
+SO-1011,2024-01-19,East,"USB-C Hub, 7-in-1",7,42.00,294.00,Online
+SO-1012,2024-01-22,West,Wireless Mouse,18,24.99,449.82,Wholesale
+SO-1013,2024-01-23,North,Monitor Arm,6,74.00,444.00,Online
+SO-1014,2024-01-25,South,Desk Mat XL,11,29.00,319.00,Retail
+SO-1015,2024-01-26,East,Webcam 1080p,4,59.00,236.00,Online
+SO-1016,2024-01-29,West,Standalone Monitor 27-inch,9,289.00,2601.00,Wholesale
+SO-1017,2024-01-30,North,Laptop Stand,14,34.50,483.00,Online
+SO-1018,2024-02-01,South,Desk Lamp LED,7,45.75,320.25,Retail
+SO-1019,2024-02-02,East,Monitor Arm,3,74.00,222.00,Online
+SO-1020,2024-02-05,West,Mechanical Keyboard,10,89.99,899.90,Wholesale
+SO-1021,2024-02-06,North,"USB-C Hub, 7-in-1",16,42.00,672.00,Online
+SO-1022,2024-02-08,South,Wireless Mouse,22,24.99,549.78,Retail
+SO-1023,2024-02-09,East,Desk Mat XL,13,29.00,377.00,Online
+SO-1024,2024-02-12,West,Webcam 1080p,8,59.00,472.00,Wholesale
+SO-1025,2024-02-13,North,Standalone Monitor 27-inch,5,289.00,1445.00,Online
+SO-1026,2024-02-15,South,Monitor Arm,7,74.00,518.00,Retail
+SO-1027,2024-02-16,East,Desk Lamp LED,10,45.75,457.50,Online
+SO-1028,2024-02-19,West,Laptop Stand,6,34.50,207.00,Wholesale
+SO-1029,2024-02-20,North,Mechanical Keyboard,9,89.99,809.91,Online
+SO-1030,2024-02-22,South,"USB-C Hub, 7-in-1",11,42.00,462.00,Retail
+SO-1031,2024-02-23,East,Wireless Mouse,17,24.99,424.83,Online
+SO-1032,2024-02-26,West,Desk Mat XL,12,29.00,348.00,Wholesale
+SO-1033,2024-02-27,North,Webcam 1080p,6,59.00,354.00,Online
+SO-1034,2024-02-28,South,Standalone Monitor 27-inch,2,289.00,578.00,Retail
+SO-1035,2024-03-01,East,Monitor Arm,8,74.00,592.00,Online
+SO-1036,2024-03-04,West,Desk Lamp LED,5,45.75,,Wholesale

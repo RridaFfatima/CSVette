@@ -1,0 +1,29 @@
+student_id,name,age,gpa,major,enrolled,enrollment_date
+S-1001,Alice Nguyen,19,3.72,Computer Science,true,2023-09-01
+S-1002,Ben Ortiz,21,3.15,Mathematics,true,2023-09-01
+S-1003,Chloe Park,20,3.88,Biology,true,2023-09-02
+S-1004,Daniel Reyes,22,,Computer Science,true,2023-09-02
+S-1005,Emma Fischer,19,2.94,History,false,2023-09-03
+S-1006,Farid Hosseini,23,3.41,Mathematics,true,2023-09-03
+S-1007,Grace Liu,20,3.67,Biology,true,2023-09-04
+S-1008,Hugo Marchand,21,2.75,History,true,2023-09-04
+S-1009,Imani Brooks,19,3.55,Computer Science,true,2023-09-05
+S-1010,Jonas Weber,24,3.02,Mathematics,false,2023-09-05
+S-1011,Keiko Tanaka,20,3.91,Biology,true,2023-09-06
+S-1012,Liam O'Connor,22,2.88,History,true,2023-09-06
+S-1013,Maria Silva,19,3.33,Computer Science,true,2023-09-07
+S-1014,Noah Kim,21,,Mathematics,true,2023-09-07
+S-1015,Olga Petrov,23,3.21,Biology,false,2023-09-08
+S-1016,Priya Sharma,20,3.79,Computer Science,true,2023-09-08
+S-1017,Quinn Sullivan,18,3.08,History,true,2023-09-09
+S-1018,Rosa Delgado,22,3.46,Mathematics,true,2023-09-09
+S-1019,Sam Whitfield,21,2.66,Biology,true,2023-09-10
+S-1020,Tara Mbeki,19,3.84,Computer Science,true,2023-09-10
+S-1021,Umar Farouk,25,3.12,History,false,2023-09-11
+S-1022,Vera Kowalski,20,3.58,Mathematics,true,2023-09-11
+S-1023,Will Turner,21,2.97,Computer Science,true,2023-09-12
+S-1024,Xenia Armstrong,23,3.29,Biology,true,2023-09-12
+S-1025,Yusuf Ali,19,3.63,History,true,2023-09-13
+S-1026,Zoe Laurent,22,3.37,Mathematics,true,2023-09-13
+S-1027,Adam Kowal,20,2.81,Computer Science,false,2023-09-14
+S-1028,Bianca Rossi,21,3.44,Biology,true,2023-09-14
