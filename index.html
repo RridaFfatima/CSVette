@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSVette — Turn messy CSVs into meaningful data</title>
+  <meta name="description" content="Inspect data quality, explore patterns, clean inconsistencies, and create visualizations — entirely in your browser.">
+  <meta name="color-scheme" content="light dark">
+
+  <!-- Content Security Policy: self + pinned CDNs only. App stays fully client-side. -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+                 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+                 font-src https://fonts.gstatic.com;
+                 img-src 'self' data:;
+                 connect-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com;
+                 object-src 'none';
+                 base-uri 'self';
+                 form-action 'none'">
+
+  <!-- Apply saved theme before first paint (prevents flash of wrong theme) -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("csvette.theme");
+        if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) { /* private browsing etc. */ }
+    })();
+    // Small diagnostic hook: surfaced console errors can be inspected via
+    // window.__errs when testing without devtools open.
+    window.__errs = [];
+    window.addEventListener("error", function (e) {
+      window.__errs.push((e.message || "?") + " @ " + (e.filename || "?") + ":" + e.lineno + ":" + e.colno);
+    });
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Favicon (inline SVG data URI: "C" monogram over a data grid) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230F766E'/%3E%3Cpath d='M9 13h6v6H9z' fill='%23fff' opacity='.5'/%3E%3Cpath d='M17 13h6v6h-6z' fill='%23fff' opacity='.5'/%3E%3Cpath d='M9 21h14v2.5H9z' fill='%23fff' opacity='.5'/%3E%3Cpath d='M13 9c-3 0-5.2 3-5.2 7s2.2 7 5.2 7c1.9 0 3.4-1 4.2-2.6' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/motion.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ================= Topbar (landing only; hidden in workspace) ================= -->
+  <header class="topbar">
+    <a class="wordmark" href="./" aria-label="CSVette home">CSV<span>ette</span></a>
+
+    <nav aria-label="Primary">
+      <a href="#features">Features</a>
+      <a href="#privacy">Privacy</a>
+    </nav>
+
+    <div class="topbar-actions">
+      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= Mount point: landing OR workspace ================= -->
+  <main id="main">
+    <div id="app-root"></div>
+  </main>
+
+  <!-- ================= Footer (landing only) ================= -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a class="wordmark" href="./">CSV<span>ette</span></a>
+
+      <nav aria-label="Footer">
+        <a href="#features">Features</a>
+        <a href="#privacy">Privacy</a>
+      </nav>
+
+      <p class="footer-legal">© 2026 CSVette · MIT License · <span class="mono">v0.2.0 — Milestone 2</span></p>
+    </div>
+  </footer>
+
+  <!-- ================= Landing template ================= -->
+  <template id="tpl-landing">
+    <div class="landing">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <span class="hero-eyebrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/>
+              </svg>
+              Runs entirely in your browser — no upload
+            </span>
+
+            <h1>Turn messy CSVs into meaningful&nbsp;data.</h1>
+
+            <p class="hero-sub">
+              Inspect data quality, explore patterns, clean inconsistencies, and create
+              visualizations — without spreadsheets, Python, or an account.
+            </p>
+
+            <div class="hero-ctas">
+              <button id="upload-btn" class="btn btn-primary btn-lg" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/>
+                </svg>
+                Upload CSV
+              </button>
+              <button id="sample-btn" class="btn btn-secondary btn-lg" type="button" aria-haspopup="menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m6 3 14 9-14 9z"/>
+                </svg>
+                Try a sample dataset
+              </button>
+            </div>
+
+            <p class="hero-note">Free, no sign-up. Your file never leaves this tab.</p>
+
+            <div id="landing-error-slot"></div>
+
+            <div class="upload-progress" hidden role="status">
+              <span class="caption">Reading your dataset…</span>
+              <div class="upload-progress-bar" aria-hidden="true"><i></i></div>
+            </div>
+          </div>
+
+          <!-- Product preview / drop target -->
+          <div class="hero-preview" id="preview">
+            <div id="dropzone" class="preview-frame" role="group" aria-label="CSVette product preview. You can drop a CSV file here to load it.">
+              <div class="preview-topbar" aria-hidden="true">
+                <span class="p-dot"></span><span class="p-dot"></span><span class="p-dot"></span>
+                <span class="preview-topbar-title mono">csvette — no dataset loaded</span>
+              </div>
+
+              <p class="dropzone-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>
+                </svg>
+                Drop a CSV file here to load it.
+              </p>
+
+              <!-- Decorative mock of the workspace Overview -->
+              <div class="preview-body" aria-hidden="true">
+                <div class="preview-side">
+                  <div class="wordmark preview-sidebar-title">CSV<span>ette</span></div>
+
+                  <p class="overline preview-group">Data Health</p>
+                  <div class="preview-item is-active"><span class="dot"></span>Missing Values<span class="count">· 4</span></div>
+                  <div class="preview-item"><span class="dot"></span>Duplicates<span class="count">· 8</span></div>
+                  <div class="preview-item"><span class="dot"></span>Outliers<span class="count">· 27</span></div>
+                  <div class="preview-item"><span class="dot"></span>Consistency<span class="count">· 3</span></div>
+
+                  <p class="overline preview-group">Explore</p>
+                  <div class="preview-item"><span class="dot"></span>Data Table</div>
+                  <div class="preview-item"><span class="dot"></span>Statistics</div>
+                </div>
+
+                <div class="preview-main">
+                  <div class="preview-card">
+                    <div class="preview-card-head">
+                      <span class="caption">Health score</span>
+                      <span class="chip">Good</span>
+                    </div>
+                    <div class="preview-score">
+                      <span class="preview-score-num">84</span>
+                      <span class="preview-meter"><i></i></span>
+                    </div>
+                  </div>
+
+                  <div class="preview-attention">
+                    <div class="attention is-critical">
+                      <span class="attention-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                        Missing Values
+                      </span>
+                      <div class="attention-count">23</div>
+                      <div class="attention-meta">4 columns affected</div>
+                    </div>
+                    <div class="attention">
+                      <span class="attention-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></svg>
+                        Potential Outliers
+                      </span>
+                      <div class="attention-count">27</div>
+                      <div class="attention-meta">3 columns affected</div>
+                    </div>
+                  </div>
+
+                  <table class="preview-table">
+                    <thead>
+                      <tr><th></th><th>Region</th><th>Units</th><th>Revenue</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>41</td><td>North</td><td class="num">120</td><td class="num">1,840</td></tr>
+                      <tr><td>42</td><td>South</td><td class="num is-missing">—</td><td class="num">920</td></tr>
+                      <tr><td>43</td><td>West</td><td class="num">74</td><td class="num">1,205</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section class="section" id="features">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="display">Everything you need to understand a CSV</h2>
+            <p>CSVette profiles every column, checks for common data-quality problems, and turns what it finds into analysis you can act on.</p>
+          </div>
+
+          <div class="features">
+            <article class="feature">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18M15 3v18"/>
+              </svg>
+              <h3 class="h3">Column profiling</h3>
+              <p>Types, missing counts, unique values, and distributions for every column — with identifiers treated as labels, not numbers.</p>
+            </article>
+
+            <article class="feature">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 13c0 5-3.5 7.5-7.7 8.9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>
+              </svg>
+              <h3 class="h3">Data-quality analysis</h3>
+              <p>Missing values, duplicates, outliers, and inconsistent categories — surfaced with counts and linked straight to the affected rows.</p>
+            </article>
+
+            <article class="feature">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m7 21-4.3-4.3a2 2 0 0 1 0-2.8l9.6-9.6a2 2 0 0 1 2.8 0l5.6 5.6a2 2 0 0 1 0 2.8L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/>
+              </svg>
+              <h3 class="h3">Safe cleaning</h3>
+              <p>Fix issues on a working copy while the original stays untouched — with before/after previews, history, and undo.</p>
+            </article>
+
+            <article class="feature">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
+              </svg>
+              <h3 class="h3">Visualizations</h3>
+              <p>Recommended charts based on your actual columns, plus a manual builder — built from your data, never fake samples.</p>
+            </article>
+
+            <article class="feature">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect width="18" height="18" x="3" y="3" rx="2"/><path d="M12 3v18M3 9h18M3 15h18"/>
+              </svg>
+              <h3 class="h3">Data explorer</h3>
+              <p>A fast, sortable, filterable table with search and pagination — designed for real datasets, not screenshots.</p>
+            </article>
+
+            <article class="feature">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>
+              </svg>
+              <h3 class="h3">Export</h3>
+              <p>Download cleaned or filtered CSVs, and generate a shareable data-quality report — all from your browser.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Privacy -->
+      <section class="section section-alt" id="privacy">
+        <div class="container">
+          <div class="privacy-band">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <div>
+              <h2 class="h2">Your data stays in your browser</h2>
+              <p>
+                CSVette is a 100% client-side application. Your dataset is processed in this tab
+                and is never uploaded to a server. There is no backend, no database, no account —
+                close the tab and your data is gone.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hidden file input for the Upload CSV button -->
+      <input type="file" id="file-input" accept=".csv,.tsv,.txt,text/csv,text/plain" hidden>
+    </div>
+  </template>
+
+  <!-- Toasts -->
+  <div id="toast-region" class="toast-region"></div>
+
+  <!-- CSV parsing (pinned; classic script → window.Papa) -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
