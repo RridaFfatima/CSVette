@@ -1,0 +1,331 @@
+/* ============================================================
+   CSVette — motion.css
+   M10 motion system: tokens, shared keyframes, global polish.
+   Principles: transform/opacity only, 120–240ms, one global
+   prefers-reduced-motion guard, tokens instead of scattered
+   values. Motion communicates feedback and continuity only.
+   ============================================================ */
+
+/* ---------- Motion tokens ----------
+   Reuses --dur-fast / --dur-med / --dur-slow / --ease-out from
+   variables.css; adds only what the system was missing. */
+:root {
+  --dur-base: var(--dur-med, 180ms);           /* alias — motion.css reads nicer */
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);   /* color/props */
+  --ease-spring: cubic-bezier(0.2, 0, 0, 1);   /* pressed snap-back */
+  --focus-ring: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent);
+}
+
+/* ---------- Shared entrance keyframes ---------- */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Reduced-motion variant: opacity only, same timing slot. */
+@keyframes rise-in-soft {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Route exit: a single fast fade; the dead frame ends invisible
+   so the incoming render is the only visible frame. */
+@keyframes fade-out-up {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Score emphasis: one restrained pulse + underline sweep. */
+@keyframes score-pulse {
+  from {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 18%, transparent);
+  }
+  to {
+    box-shadow: 0 0 0 10px transparent;
+  }
+}
+
+@keyframes score-line-sweep {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------- Screen/route entrance (Ph.2) ---------- */
+.screen-enter {
+  animation: rise-in var(--dur-slow) var(--ease-out);
+}
+
+.route-fade-leave {
+  animation: fade-out-up var(--dur-fast) var(--ease-soft) forwards;
+  pointer-events: none;
+}
+
+/* View swaps within one screen (chart rebuilds, op panels). */
+.view-transition {
+  animation: rise-in var(--dur-base) var(--ease-out);
+}
+
+/* ---------- Sidebar (Ph.2) ---------- */
+.side-item {
+  transition:
+    background var(--dur-fast) var(--ease-soft),
+    color var(--dur-fast) var(--ease-soft);
+}
+.side-item:hover {
+  background: var(--surface-2);
+}
+
+/* Count badges appear by hiding/showing — fade when shown. */
+.side-count {
+  transition: opacity var(--dur-fast) var(--ease-soft);
+}
+.side-count[hidden] {
+  opacity: 0;
+}
+
+/* ---------- Topbar (Ph.2) ---------- */
+.icon-btn,
+.theme-toggle,
+.chip {
+  transition:
+    background var(--dur-fast) var(--ease-soft),
+    border-color var(--dur-fast) var(--ease-soft),
+    color var(--dur-fast) var(--ease-soft);
+}
+.theme-toggle:active {
+  transform: translateY(1px);
+}
+
+/* Title swaps fade in — continuity, not a flashy wipe. */
+.title-fade {
+  animation: rise-in-soft var(--dur-base) var(--ease-out);
+}
+
+/* ---------- Insight rows (Ph.6): gentle 40ms stagger ---------- */
+.insight-row {
+  animation: rise-in var(--dur-slow) var(--ease-out) backwards;
+}
+.insight-row:nth-child(1) { animation-delay: 0ms; }
+.insight-row:nth-child(2) { animation-delay: 40ms; }
+.insight-row:nth-child(3) { animation-delay: 80ms; }
+.insight-row:nth-child(4) { animation-delay: 120ms; }
+.insight-row:nth-child(5) { animation-delay: 160ms; }
+.insight-row:nth-child(6) { animation-delay: 200ms; }
+
+/* ---------- Score presentation (Ph.6) ---------- */
+.health-score {
+  position: relative;
+}
+.health-score::after {
+  content: "";
+  position: absolute;
+  left: var(--space-4);
+  right: var(--space-4);
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.health-score.score-highlight {
+  animation: score-pulse 700ms var(--ease-out);
+}
+.health-score.score-highlight::after {
+  animation: score-line-sweep 900ms var(--ease-out);
+}
+
+/* ---------- Chart presentation (Ph.7) ---------- */
+.chart-rec {
+  transition:
+    border-color var(--dur-base) var(--ease-soft),
+    background var(--dur-base) var(--ease-soft),
+    box-shadow var(--dur-base) var(--ease-soft),
+    transform var(--dur-base) var(--ease-soft);
+}
+.chart-rec:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+.chart-rec:active {
+  transform: translateY(0);
+}
+
+.chart-tip {
+  transition: opacity var(--dur-fast) var(--ease-soft);
+}
+
+/* Chart rebuilds crossfade: old markup fades fast, the fresh
+   render enters via .view-transition. */
+.chart-output {
+  transition: opacity var(--dur-fast) var(--ease-soft);
+}
+.chart-output.fade-out {
+  opacity: 0;
+}
+
+/* SVG recolor/hover transitions (charts set fill via presentation
+   attributes, which CSS transitions apply to). */
+svg rect[data-col],
+svg circle,
+svg path.line {
+  transition: fill var(--dur-base) var(--ease-soft);
+}
+svg rect[data-col]:hover {
+  fill: var(--accent);
+}
+
+/* ---------- Data table (Ph.4): container-level, not per-row.
+   Property-only transitions so hover/selected/focus recolors feel
+   smooth without animating transforms on thousands of rows. */
+.data-table th,
+.data-table td {
+  transition: background var(--dur-fast) var(--ease-soft);
+}
+
+/* ---------- Buttons (Ph.3): physical feedback ---------- */
+.btn {
+  transition:
+    background var(--dur-fast) var(--ease-soft),
+    border-color var(--dur-fast) var(--ease-soft),
+    color var(--dur-fast) var(--ease-soft),
+    box-shadow var(--dur-fast) var(--ease-soft);
+}
+.btn:active {
+  transform: translateY(1px);
+  transition-duration: var(--dur-fast);
+}
+.btn:focus-visible {
+  box-shadow: var(--focus-ring);
+  outline: none;
+}
+
+/* ---------- Theme transition (Ph.12) ----------
+   Two layers, no flash: the short-lived `live` class toggled by
+   js/app.js around a theme flip crossfades property changes;
+   `fast` (quick successive toggles) snaps instantly. */
+html.live,
+html.live *:not(.no-theme-fade) {
+  transition-property: background-color, color, border-color, box-shadow, fill, stroke;
+  transition-duration: var(--dur-base);
+  transition-timing-function: var(--ease-soft);
+}
+
+html.fast,
+html.fast *:not(.no-theme-fade) {
+  transition-duration: 0.01ms;
+}
+
+.no-theme-fade {
+  transition: none !important;
+}
+
+/* ---------- Feedback surfaces (Ph.8/9/10) ---------- */
+.clean-feedback {
+  animation: rise-in var(--dur-slow) var(--ease-out);
+}
+
+/* Landing: hero copy and product preview settle in on first paint. */
+.hero > .container {
+  animation: rise-in var(--dur-slow) var(--ease-out);
+}
+.hero-preview {
+  animation: rise-in var(--dur-slow) var(--ease-out) 60ms backwards;
+}
+
+.clean-op {
+  transition: background var(--dur-fast) var(--ease-soft);
+}
+.clean-op:hover {
+  background: var(--surface-2);
+}
+
+.export-option {
+  transition:
+    box-shadow var(--dur-base) var(--ease-soft),
+    transform var(--dur-base) var(--ease-soft);
+}
+.export-option:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.all-clear {
+  animation: rise-in var(--dur-slow) var(--ease-out);
+  transition:
+    border-color var(--dur-base) var(--ease-soft),
+    box-shadow var(--dur-base) var(--ease-soft);
+}
+.all-clear:hover {
+  border-color: color-mix(in srgb, var(--positive) 35%, var(--border));
+}
+
+/* ---------- Global reduced-motion guard (Ph.14) ----------
+   Decorative entrance keyframes collapse to opacity-only or no
+   animation; feedback transitions collapse to instant; pressed
+   translation removed. Focus indicators are NOT touched. */
+@media (prefers-reduced-motion: reduce) {
+  .screen-enter,
+  .view-transition,
+  .route-fade-leave,
+  .clean-feedback,
+  .all-clear {
+    animation: none;
+  }
+  .insight-row {
+    animation: rise-in-soft 0.01ms both;
+  }
+  .health-score.score-highlight {
+    animation: none;
+  }
+  .health-score.score-highlight::after {
+    animation: none;
+    transform: scaleX(1);
+  }
+  .clean-op,
+  .btn,
+  .icon-btn,
+  .theme-toggle,
+  .chip,
+  .title-fade,
+  .side-item,
+  .side-count,
+  .chart-rec,
+  .chart-tip,
+  .chart-output,
+  .export-option,
+  .all-clear,
+  .insight-row,
+  .data-table th,
+  .data-table td {
+    transition-duration: 0.01ms !important;
+  }
+  .btn:active,
+  .theme-toggle:active,
+  .chart-rec:hover,
+  .export-option:hover {
+    transform: none;
+  }
+  html.live,
+  html.live *:not(.no-theme-fade) {
+    transition-duration: 0.01ms;
+  }
+  .hero > .container,
+  .hero-preview {
+    animation: none;
+  }
+}

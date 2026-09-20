@@ -1,0 +1,133 @@
+/* ============================================================
+   CSVette — variables.css
+   Design tokens (see docs/DESIGN-SYSTEM.md).
+   All components must use tokens — never raw hex values.
+   ============================================================ */
+
+:root {
+  /* Fonts */
+  --font-ui: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Consolas, monospace;
+
+  /* --- Light theme ("Paper") --- */
+  --bg: #F6F7F8;               /* page background */
+  --surface: #FFFFFF;          /* cards, sidebar, table */
+  --surface-2: #EFF1F3;        /* hovers, skeletons, subtle fills */
+  --elevated: #FFFFFF;         /* modals, popovers, toasts */
+
+  --border-color: #E2E5E9;
+  --border-strong: #CBD1D8;
+
+  --text: #191D21;             /* ≈15:1 on bg/surface */
+  --text-2: #454C54;           /* ≈8:1 */
+  --text-3: #6B727B;           /* ≈4.9:1 */
+
+  --accent: #0F766E;
+  --accent-strong: #0B5D57;
+  --accent-soft: #E4F2F0;
+  --accent-contrast: #FFFFFF;  /* text on accent fills */
+
+  --success: #067647;
+  --warning: #B54708;
+  --critical: #B42318;
+  --info: #175CD3;
+
+  --tint-success: #ECFDF3;
+  --tint-warning: #FFFAEB;
+  --tint-critical: #FEF3F2;
+  --tint-info: #EFF8FF;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  /* Borders & shadows */
+  --border-width: 1px;
+  --shadow-1: 0 1px 2px rgba(16, 20, 24, 0.05);
+  --shadow-2: 0 4px 16px rgba(16, 20, 24, 0.10);
+
+  /* Focus ring (2px accent ring with surface-colored gap) */
+  --focus-ring: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent);
+
+  /* Scrim behind modals / drawers */
+  --scrim: rgba(12, 14, 16, 0.5);
+
+  /* Spacing scale (4px grid) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --space-10: 64px;
+
+  /* Layout */
+  --topbar-height: 56px;
+  --content-max: 1200px;
+
+  /* Motion */
+  --dur-fast: 120ms;
+  --dur-med: 180ms;
+  --dur-slow: 200ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.64, 0, 0.78, 0);
+
+  /* Charts (colorblind-aware muted categorical) */
+  --chart-c1: #0F766E;
+  --chart-c2: #3B5B92;
+  --chart-c3: #B45309;
+  --chart-c4: #6D5BA6;
+  --chart-c5: #0E7490;
+  --chart-c6: #9A3412;
+  --chart-c7: #4D7C0F;
+  --chart-c8: #64748B;
+}
+
+/* --- Dark theme ("Graphite") --- */
+[data-theme="dark"] {
+  --bg: #17191C;
+  --surface: #1E2125;
+  --surface-2: #26292E;
+  --elevated: #24282D;
+
+  --border-color: #34383E;
+  --border-strong: #474C53;
+
+  --text: #E7EAED;             /* ≈13:1 */
+  --text-2: #A9B0B8;           /* ≈7:1 */
+  --text-3: #878E96;           /* ≈4.6:1 */
+
+  --accent: #3FBDAF;
+  --accent-strong: #5ED0C4;
+  --accent-soft: #1B3330;
+  --accent-contrast: #0B1F1D;  /* dark text on teal fills */
+
+  --success: #4ADE80;
+  --warning: #FBBF24;
+  --critical: #F87171;
+  --info: #7DABF8;
+
+  --tint-success: #12291C;
+  --tint-warning: #2E2410;
+  --tint-critical: #2E1614;
+  --tint-info: #14243B;
+
+  /* Dark theme: borders carry structure; shadows only for elevated layers */
+  --shadow-1: none;
+  --shadow-2: 0 4px 16px rgba(0, 0, 0, 0.35);
+
+  --scrim: rgba(5, 6, 8, 0.6);
+
+  --chart-c1: #3FBDAF;
+  --chart-c2: #7C9CD6;
+  --chart-c3: #E8A13D;
+  --chart-c4: #A493D9;
+  --chart-c5: #5BB8CB;
+  --chart-c6: #E08A63;
+  --chart-c7: #8FB65A;
+  --chart-c8: #94A3B8;
+}
