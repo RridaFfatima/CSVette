@@ -1,66 +1,287 @@
-# CSVette
+ CSVette
 
-> Turn messy CSVs into meaningful data.
+A browser-based CSV data quality, exploration, cleaning, and visualization tool.
 
-CSVette is a browser-based CSV data analysis and data-quality tool. Inspect data quality, explore patterns, clean inconsistencies, and create visualizations — **entirely in your browser**.
+CSVette helps you understand a dataset before working with it — from identifying missing values and duplicates to exploring distributions, finding inconsistencies, cleaning data, and exporting the results.
 
-**Your data stays in your browser.** CSVette does not upload your dataset to a server. There is no backend, no database, and no account.
+Everything happens in your browser. Your dataset is never uploaded to a server.
 
-## Status
 
-🚧 Under construction — Milestone 10 (Premium Polish & Motion). The CSV engine, data-quality analysis, health screens, the Data Explorer, charting/correlations, a full non-destructive cleaning workspace, CSV exports (original / working / filtered), a standalone HTML data-quality report, and deterministic key insights on the Overview are working and have passed a full QA pass (336 automated tests). See `docs/` for the approved UX, design-system, and technical architecture.
+ ✦ What is CSVette?
 
-### Motion system (Milestone 10)
+Working with a CSV often starts with the same questions:
 
-All interaction motion lives in `css/motion.css` — tokens (`--ease-soft`, `--ease-spring`, `--dur-base` aliasing the design-system durations), shared entrance keyframes, a subtle route entrance, insight stagger, one-shot health-score emphasis after data changes, a chart rebuild crossfade, button/press feedback, a theme-switch crossfade, and a single global `prefers-reduced-motion` guard that collapses all decorative motion to opacity-only or instant. Motion communicates feedback and continuity only — transform/opacity, 120–240ms.
+* What is actually in this dataset?
+* Which columns have missing or inconsistent values?
+* Are there duplicates or suspicious outliers?
+* What patterns are worth investigating?
+* What happens if I clean the data?
+* Can I compare the original dataset with the cleaned version?
 
-### Visualization (Milestone 5)
+CSVette brings these steps together in one workspace.
 
-- **Charts** — histogram (Freedman–Diaconis binning), box plot (IQR fences matching the quality engine), bar charts (top-N with honest omission counts), aggregated bars (count/mean/median/sum/min/max), scatter (missing-pair handling), and date line charts — all hand-rolled SVG styled with the design tokens, theme-aware, custom tooltips
-- **Recommendations** — deterministic rules from the existing type profiles, each with a why
-- **Manual builder** — only valid combinations are offered; invalid ones get an explanation, never a broken chart
-- **Filter integration** — charts draw from the Data Explorer's filtered view, with a visible scope control and provenance notes
-- **Correlations** — Pearson matrix over row-paired values, tinted cells, neutral association language, explicit correlation ≠ causation note, cell → scatter deep links
-- **No chart library added** — pure logic (`chart-data.js`) is Node-tested (`node tests/chart-data-test.js`, 51 checks)
+Upload → Understand → Find Problems → Explore → Clean → Visualize → Export**
 
-### Data Explorer (Milestone 4)
 
-- **Search** across all columns — live counts (`8 of 30 rows match`), match highlighting, numeric values matched by value not substring
-- **Type-aware filters** — text (contains/equals/starts/empty), numeric (> < ≥ ≤ between), boolean (true/false), date (before/after/between) — combinable, with edit/remove/clear-all chips
-- **Combined pipeline** — search + filters + sort + pagination always agree; pages clamp when the view shrinks
-- **Quality deep links preserved** — analysis screens still land on the exact row/column; rows hidden by an active filter are explained, not silently dropped
+ ✦ Features
 
-Run the filter-engine tests with `node tests/filter-test.js` (42 checks against the messy sample).
+ Data Quality Analysis
 
-## Run locally
+Automatically profile your dataset and identify:
 
-The app is plain HTML/CSS/JS (ES modules), so it needs to be served over HTTP:
+* Missing values and missing-value patterns
+* Duplicate rows
+* Duplicate identifiers
+* Constant columns
+* Category inconsistencies
+* Type violations
+* Identifier issues
+* Potential outliers
+* Overall data health
 
-```bash
-# from the project root — pick whichever you have:
-python serve.py 8000        # recommended: disables caching (edits show on reload)
+The health score combines:
+
+Completeness · Uniqueness · Consistency · Validity
+
+
+ Data Explorer
+
+Explore your data interactively with:
+
+* Global search
+* Match highlighting
+* Type-aware filters
+* Multiple filters with AND logic
+* Sorting
+* Pagination
+* Deep links from quality findings directly into relevant rows and columns
+
+
+ Visualizations
+
+Create visualizations directly from your dataset:
+
+* Histograms
+* Box plots
+* Bar charts
+* Aggregated charts
+* Scatter plots
+* Date-based line charts
+* Pearson correlation matrix
+
+Charts respect the current filtered dataset and provide context about the data being visualized.
+
+
+
+ Data Cleaning
+
+Clean your working dataset without modifying the original:
+
+* Remove duplicate rows
+* Fill missing values
+* Trim whitespace
+* Normalize text case
+* Replace values
+* Rename columns
+* Delete columns
+* Delete selected rows
+
+Every successful modification is tracked in history.
+
+**Undo** and **Reset** let you safely experiment with your data.
+
+
+
+ Insights
+
+CSVette automatically surfaces useful observations such as:
+
+* Significant missingness
+* Duplicate records
+* Highly concentrated categories
+* High-cardinality columns
+* Potential outliers
+* Distribution asymmetry
+* High variability
+* Strong or moderate correlations
+
+Insights are linked back to the relevant part of the application so you can investigate them rather than simply reading a warning.
+
+
+
+ Export & Reporting
+
+Export:
+
+* Original CSV
+* Working/cleaned CSV
+* Current filtered view
+
+CSVette can also generate a standalone **Data Quality Report** containing dataset statistics, quality findings, insights, column information, and cleaning history.
+
+
+
+ ✦ Privacy by Design
+
+CSVette is entirely client-side.
+
+Your CSV stays in your browser.
+
+There is:
+
+* No backend
+* No database
+* No account
+* No dataset upload
+* No API key
+* No cloud processing
+
+Local storage is used only for application preferences such as theme settings.
+
+
+
+ ✦ Design
+
+CSVette uses a restrained data-product interface built around:
+
+* Paper and Graphite themes
+* IBM Plex typography
+* Data-focused visual hierarchy
+* Responsive layouts
+* Accessible interaction states
+* Subtle motion and transitions
+* Reduced-motion support
+
+The interface is intentionally designed to keep data and analysis at the center rather than overwhelming the user with decorative UI.
+
+
+
+ ✦ Performance
+
+CSVette is designed to work entirely in the browser while remaining responsive across typical CSV workflows.
+
+During final QA, the application was tested with datasets up to **50,000 rows**.
+
+Representative measurements included:
+
+| Dataset           |                           Result |
+| ----------------- | -------------------------------: |
+| 1,000 rows        |         Near-instant interaction |
+| 10,000 rows       |           ~2s initial processing |
+| 50,000 rows       | A few seconds initial processing |
+| 50,000-row search |                            ~15ms |
+| 50,000-row sort   |                            ~15ms |
+| 2.1MB CSV export  |                            ~92ms |
+
+Initial processing of very large datasets can block the browser briefly because CSVette intentionally keeps processing client-side.
+
+
+
+ ✦ Testing
+
+CSVette went through a full functional and browser QA cycle.
+
+Current automated regression suite:
+
+336 / 336 tests passing
+
+Coverage includes:
+
+* Data cleaning
+* Filtering
+* Visualization data preparation
+* CSV export
+* Data quality reports
+* Automated insights
+
+Browser QA additionally covered:
+
+* Dataset switching
+* Deep links
+* Search and filters
+* Sorting and pagination
+* Cleaning and undo/reset
+* Charts and correlations
+* Insights
+* CSV exports
+* Report generation
+* Dark/light themes
+* Mobile layouts
+* Accessibility
+* Security/XSS cases
+* Large datasets
+* GitHub Pages compatibility
+
+
+
+ ✦ Tech Stack
+
+* HTML5
+* CSS3
+* Vanilla JavaScript
+* ES Modules
+* Papa Parse for CSV parsing
+* SVG for data visualizations
+* localStorage for user preferences
+* GitHub Pages for deployment
+
+No frontend framework and no build step.
+
+
+
+ ✦ Architecture
+
+CSVette is structured as a modular client-side application.
+
+
+CSVette
+│
+├── CSV Parsing
+├── Dataset State
+├── Data Profiling
+├── Quality Engine
+├── Data Explorer
+├── Statistics
+├── Visualization Engine
+├── Cleaning Engine
+├── Insights Engine
+├── Export / Reporting
+└── UI / Routing
+
+
+The original dataset and working dataset are kept separate so cleaning operations remain non-destructive.
+
+Core analysis logic is separated from UI rendering where possible, allowing the data engines to be tested independently.
+
+
+ ✦ Run Locally
+
+Clone the repository and serve the project over HTTP.
+
+bash
+python serve.py 8000
+
+
+Or:
+
+bash
 python -m http.server 8000
-npx serve .
-```
 
-Then open http://localhost:8000
 
-## Deploy
+Then open:
 
-Static hosting only (built for GitHub Pages): push the repository, enable Pages on the main branch / root. No build step.
+text
+http://localhost:8000
 
-## Tech
 
-- HTML5, CSS3, vanilla JavaScript (ES modules) — no framework, no build step
-- Papa Parse, Plotly.js, Lucide (added in later milestones)
-- localStorage stores preferences only (e.g. theme) — never your data
+CSVette does not require a backend or build process.
 
-## Docs
+ ✦ Deployment
 
-- `docs/UX-ARCHITECTURE.md` — screens, navigation, flows
-- `docs/DESIGN-SYSTEM.md` — tokens, typography, components, themes
-- `docs/TECHNICAL-ARCHITECTURE.md` — modules, data model, quality engine, testing
+CSVette is designed for static hosting and can be deployed directly through GitHub Pages.
 
-## License
+There is no build step.
 
-MIT — see `LICENSE`.
+ ✦ License
+
+MIT License
