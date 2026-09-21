@@ -1,6 +1,7 @@
  CSVette
 
 A browser-based CSV data quality, exploration, cleaning, and visualization tool.
+https://rridaffatima.github.io/CSVette/#/
 
 CSVette helps you understand a dataset before working with it — from identifying missing values and duplicates to exploring distributions, finding inconsistencies, cleaning data, and exporting the results.
 
