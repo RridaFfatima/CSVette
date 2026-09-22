@@ -1,14 +1,14 @@
- CSVette
+# CSVette
 
-A browser-based CSV data quality, exploration, cleaning, and visualization tool.
-https://rridaffatima.github.io/CSVette/#/
+**A browser-based CSV data quality, exploration, cleaning, and visualization tool.**
 
 CSVette helps you understand a dataset before working with it — from identifying missing values and duplicates to exploring distributions, finding inconsistencies, cleaning data, and exporting the results.
 
-Everything happens in your browser. Your dataset is never uploaded to a server.
+**Everything happens in your browser. Your dataset is never uploaded to a server.**
 
+---
 
- ✦ What is CSVette?
+## ✦ What is CSVette?
 
 Working with a CSV often starts with the same questions:
 
@@ -21,12 +21,13 @@ Working with a CSV often starts with the same questions:
 
 CSVette brings these steps together in one workspace.
 
-Upload → Understand → Find Problems → Explore → Clean → Visualize → Export**
+**Upload → Understand → Find Problems → Explore → Clean → Visualize → Export**
 
+---
 
- ✦ Features
+## ✦ Features
 
- Data Quality Analysis
+### Data Quality Analysis
 
 Automatically profile your dataset and identify:
 
@@ -42,10 +43,11 @@ Automatically profile your dataset and identify:
 
 The health score combines:
 
-Completeness · Uniqueness · Consistency · Validity
+**Completeness · Uniqueness · Consistency · Validity**
 
+---
 
- Data Explorer
+### Data Explorer
 
 Explore your data interactively with:
 
@@ -57,8 +59,9 @@ Explore your data interactively with:
 * Pagination
 * Deep links from quality findings directly into relevant rows and columns
 
+---
 
- Visualizations
+### Visualizations
 
 Create visualizations directly from your dataset:
 
@@ -72,9 +75,9 @@ Create visualizations directly from your dataset:
 
 Charts respect the current filtered dataset and provide context about the data being visualized.
 
+---
 
-
- Data Cleaning
+### Data Cleaning
 
 Clean your working dataset without modifying the original:
 
@@ -91,9 +94,9 @@ Every successful modification is tracked in history.
 
 **Undo** and **Reset** let you safely experiment with your data.
 
+---
 
-
- Insights
+### Insights
 
 CSVette automatically surfaces useful observations such as:
 
@@ -108,9 +111,9 @@ CSVette automatically surfaces useful observations such as:
 
 Insights are linked back to the relevant part of the application so you can investigate them rather than simply reading a warning.
 
+---
 
-
- Export & Reporting
+### Export & Reporting
 
 Export:
 
@@ -120,9 +123,9 @@ Export:
 
 CSVette can also generate a standalone **Data Quality Report** containing dataset statistics, quality findings, insights, column information, and cleaning history.
 
+---
 
-
- ✦ Privacy by Design
+## ✦ Privacy by Design
 
 CSVette is entirely client-side.
 
@@ -139,9 +142,9 @@ There is:
 
 Local storage is used only for application preferences such as theme settings.
 
+---
 
-
- ✦ Design
+## ✦ Design
 
 CSVette uses a restrained data-product interface built around:
 
@@ -155,9 +158,9 @@ CSVette uses a restrained data-product interface built around:
 
 The interface is intentionally designed to keep data and analysis at the center rather than overwhelming the user with decorative UI.
 
+---
 
-
- ✦ Performance
+## ✦ Performance
 
 CSVette is designed to work entirely in the browser while remaining responsive across typical CSV workflows.
 
@@ -176,15 +179,15 @@ Representative measurements included:
 
 Initial processing of very large datasets can block the browser briefly because CSVette intentionally keeps processing client-side.
 
+---
 
-
- ✦ Testing
+## ✦ Testing
 
 CSVette went through a full functional and browser QA cycle.
 
 Current automated regression suite:
 
-336 / 336 tests passing
+**336 / 336 tests passing**
 
 Coverage includes:
 
@@ -213,28 +216,28 @@ Browser QA additionally covered:
 * Large datasets
 * GitHub Pages compatibility
 
+---
 
+## ✦ Tech Stack
 
- ✦ Tech Stack
-
-* HTML5
-* CSS3
-* Vanilla JavaScript
-* ES Modules
-* Papa Parse for CSV parsing
-* SVG for data visualizations
-* localStorage for user preferences
-* GitHub Pages for deployment
+* **HTML5**
+* **CSS3**
+* **Vanilla JavaScript**
+* **ES Modules**
+* **Papa Parse** for CSV parsing
+* **SVG** for data visualizations
+* **localStorage** for user preferences
+* **GitHub Pages** for deployment
 
 No frontend framework and no build step.
 
+---
 
-
- ✦ Architecture
+## ✦ Architecture
 
 CSVette is structured as a modular client-side application.
 
-
+```text
 CSVette
 │
 ├── CSV Parsing
@@ -248,41 +251,56 @@ CSVette
 ├── Insights Engine
 ├── Export / Reporting
 └── UI / Routing
-
+```
 
 The original dataset and working dataset are kept separate so cleaning operations remain non-destructive.
 
 Core analysis logic is separated from UI rendering where possible, allowing the data engines to be tested independently.
 
+---
 
- ✦ Run Locally
+## ✦ Run Locally
 
 Clone the repository and serve the project over HTTP.
 
-bash
+```bash
 python serve.py 8000
-
+```
 
 Or:
 
-bash
+```bash
 python -m http.server 8000
-
+```
 
 Then open:
 
-text
+```text
 http://localhost:8000
-
+```
 
 CSVette does not require a backend or build process.
 
- ✦ Deployment
+---
 
-CSVette is designed for static hosting and can be deployed directly through GitHub Pages.
+## ✦ Deployment
+
+CSVette is designed for static hosting and can be deployed directly through **GitHub Pages**.
 
 There is no build step.
 
- ✦ License
+---
+
+## ✦ Project Documentation
+
+Additional project documentation is available in [`docs/`](docs/):
+
+* [`UX Architecture`](docs/UX-ARCHITECTURE.md)
+* [`Design System`](docs/DESIGN-SYSTEM.md)
+* [`Technical Architecture`](docs/TECHNICAL-ARCHITECTURE.md)
+
+---
+
+## ✦ License
 
 MIT License
